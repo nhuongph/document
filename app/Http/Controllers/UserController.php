@@ -47,8 +47,12 @@ class UserController extends Controller
         if ($request->file('avatar')->isValid()) {
             $file = $request->file('avatar');
             $file_name = $data_input['username'].'.jpg';
-            $data_input['avatar'] = 'uploads/'.$file_name;
-            $file->move('uploads',$file_name);
+            $path = "uploads/".Auth::user()->username;
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+            }
+            $data_input['avatar'] = $path.$file_name;
+            $file->move($path,$file_name);
         }
         
         $token = str_random('60');        
@@ -90,6 +94,15 @@ class UserController extends Controller
     public function postUpdate(UpdateRequest $request){
         $data_input = User::where('id', '=', $request->id)->first();
 //        $data_input = $request->all();
+        $data_input['username'] = $request->username;
+        $data_input['password'] = $request->password;
+        $data_input['email'] = $request->email;
+        if ($request->file('avatar')->isValid()) {
+            $file = $request->file('avatar');
+            $file_name = $data_input['username'].'.jpg';
+            $data_input['avatar'] = 'uploads/'.$file_name;
+            $file->move('uploads',$file_name);
+        }
         $data_input->save();
         return redirect()->route('home');
     }

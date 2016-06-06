@@ -13,6 +13,7 @@
             <div class="card card-container">
                 <img id="profile-img" class="profile-img-card" src="{!! asset('images/avatar_2x.png') !!}" />
                 <p id="profile-name" class="profile-name-card"></p>
+                <h1>Login</h1>
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
                         <ul>
@@ -22,17 +23,11 @@
                         </ul>
                     </div>
                 @endif
-                <h1>Login</h1>
                 <form class="form-signin" method="post" action="login">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <span id="reauth-email" class="reauth-email"></span>
                     <input name="username" id="inputUsername" class="form-control" placeholder="Username" autofocus>
                     <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password">
-<!--                    <div id="remember" class="checkbox">
-                        <label>
-                            <input type="checkbox" name="remember-me" value="remember-me"> Remember me
-                        </label>
-                    </div>-->
                     <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
                 </form><!-- /form -->
                 <a href="{!! url('password/email') !!}" class="forgot-password">

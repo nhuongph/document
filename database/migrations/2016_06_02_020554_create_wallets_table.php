@@ -12,11 +12,14 @@ class CreateWalletsTable extends Migration
      */
     public function up()
     {
-        Schema::create('Wallets', function (Blueprint $table) {
+        Schema::create('wallets', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('type_money');
-            $table->decimal('money');
+            $table->string('money');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('current');
             $table->string('note')->nullable();
             $table->string('image')->nullable();
             $table->timestamps();
@@ -30,6 +33,6 @@ class CreateWalletsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('Wallets');
+        Schema::drop('wallets');
     }
 }

@@ -15,6 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//User
 Route::get('/logout', ['uses' => 'UserController@getLogout', 'as' => 'getLogout']);
 
 Route::get('/login', ['uses' => 'UserController@getLogin', 'as' => 'getLogin']);
@@ -27,18 +28,19 @@ Route::get('/createAccount/{token}', ['uses' => 'UserController@createAccount', 
 Route::get('/update/{username}', ['uses' => 'UserController@getUpdate', 'as' => 'getUpdate']);
 Route::post('/update', ['uses' => 'UserController@postUpdate', 'as' => 'postUpdate']);
 
-Route::get('/home', ['as' => 'home', 'middleware' => 'auth', function() {
-        return view("admin.master");
-    }]);
-
-
-Route::get('/admin', ['as' => 'admin', 'middleware' => 'auth', function() {
-        return view("admin.master");
-    }]);
-
 Route::controllers(
     [
         'auth' => 'Auth\AuthController',
         'password' => 'Auth\PasswordController'
     ]
 );
+
+//Walltet 
+Route::get('/home', ['uses' => 'WalletsController@getWallet', 'as' => 'home']);
+Route::get('/addwallet', ['uses' => 'WalletsController@getAddWallet', 'as' => 'addWallet']);
+Route::post('/addwallet', ['uses' => 'WalletsController@postAddWallet', 'as' => 'postWallet']);
+Route::post('/addwallet', ['uses' => 'WalletsController@postAddWallet', 'as' => 'postWallet']);
+Route::get('/currentwallet/{id}', ['uses' => 'WalletsController@setCurrentWallet', 'as' => 'setCurrentWallet']);
+Route::get('/updatewallet/{id}', ['uses' => 'WalletsController@getUpdateWallet', 'as' => 'getUpdateWallet']);
+Route::post('/updatewallet', ['uses' => 'WalletsController@postUpdateWallet', 'as' => 'postUpdateWallet']);
+Route::get('/deletewallet/{id}', ['uses' => 'WalletsController@getDeleteWallet', 'as' => 'getDeleteWallet']);
