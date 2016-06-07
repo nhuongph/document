@@ -103,4 +103,10 @@ class TransMoneysController extends Controller
         $transmoneys = TransMoney::all();
         return view('TransMoney.month')->with('transmoneys',$transmoneys);
     }
+    
+    public function postMonthTransaction(Request $request){
+        $month = $request->month;
+        $transmoneys = TransMoney::where('updated_at','like',$month.'%');
+        return view('TransMoney.month')->with('transmoneys',$transmoneys);
+    }
 }

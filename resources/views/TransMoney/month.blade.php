@@ -43,7 +43,7 @@
                             $('.datepicker').datepicker();
                         </script>
                     </div>
-                    <button type="submit" class="btn btn-default">Create Transaction Money</button>
+                    <button type="submit" class="btn btn-default">Report Transaction</button>
                 </form><!-- /form -->
                 <hr>
                 @foreach($transmoneys as $var)
