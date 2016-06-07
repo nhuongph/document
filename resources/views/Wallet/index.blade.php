@@ -34,6 +34,7 @@
                             <li>{!! $current->name !!}</li>
                             <li>{!! $current->money !!}&nbsp;{!! $current->type_money !!}</li>
                             <li>{!! $current->note !!}</li>
+                            <li><a href="{!! url('transwallet') !!}/{!! $current->id !!}">Transfer money other wallet!</a></li>
                             <li>
                                 <a href="{!! url('updatewallet') !!}/{!! $current->id !!}">
                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
@@ -55,6 +56,7 @@
                         <tr><td>{!! $var->money !!}&nbsp;{!! $var->type_money !!}</td></tr>
                         <tr><td>{!! $var->note !!}</td></tr>
                         <tr><td><a href="{!! url('currentwallet') !!}/{!! $var->id !!}">Set current Wallet</a></td></tr>
+                        <tr><td><a href="{!! url('transwallet') !!}/{!! $var->id !!}">Transfer money other wallet!</a></td></tr>
                         <tr><td><a href="{!! url('updatewallet') !!}/{!! $var->id !!}">
                                                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                             </a>&nbsp;

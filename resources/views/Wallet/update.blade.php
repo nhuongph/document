@@ -26,8 +26,7 @@
                 @endif
                 <form class="form-signin" method="post" action="/updatewallet" enctype="multipart/form-data">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                    <input type="hidden" name="current" value="{{ Auth::user()->current }}">
+                    <input type="hidden" name="id" value="{!! $wallet['id'] !!}">
                     <div class="form-group">
                         <label for="exampleInputName">Name Wallet</label>
                         <input type="text" class="form-control" id="nameWallet" placeholder="Name Wallet" name="name" value="{!! $wallet['name'] !!}">

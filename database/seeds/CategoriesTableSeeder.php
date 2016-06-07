@@ -25,6 +25,13 @@ class CategoriesTableSeeder extends Seeder {
                         'image' => 'uploads/shopping.jpg',
                         'created_at' => new DateTime(),
                         'updated_at' => new DateTime()
+                    ],
+                    [
+                        'name' => 'Nạp tiền',
+                        'note' => 'Nạp tiền vào Wallet',
+                        'image' => 'uploads/nhuongph/category/Nạp tiền.jpg',
+                        'created_at' => new DateTime(),
+                        'updated_at' => new DateTime()
                     ]
                 ]
         );

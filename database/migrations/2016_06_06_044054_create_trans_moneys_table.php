@@ -16,7 +16,7 @@ class CreateTransMoneysTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('type_money');
-            $table->decimal('money');
+            $table->string('money');
             $table->integer('wallet_id')->unsigned();
             $table->foreign('wallet_id')->references('id')->on('wallets');
             $table->integer('category_id')->unsigned();
