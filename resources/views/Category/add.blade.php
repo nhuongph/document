@@ -11,6 +11,8 @@
     <body>
         <div class="container">
             <div class="">
+                <h1>Add Category</h1>
+                <hr>
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
                         <ul>
@@ -20,8 +22,6 @@
                         </ul>
                     </div>
                 @endif
-                <h1>Add Category</h1>
-                <hr>
                 <a href="{!! url('category') !!}">
                     Index Category
                 </a>

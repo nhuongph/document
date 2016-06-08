@@ -65,6 +65,10 @@ Route::post('/updatetransaction', ['uses' => 'TransMoneysController@postUpdateTr
 
 Route::get('/deletetransaction/{id}', ['uses' => 'TransMoneysController@getDeleteTransaction', 'as' => 'getDeleteTransaction']);
 
+Route::get('/seachreport', ['uses' => 'TransMoneysController@getSearchReport', 'as' => 'getSearchReport']);
+Route::post('/seachreport', ['uses' => 'TransMoneysController@postSearchReport', 'as' => 'postSearchReport']);
 
-Route::get('/monthtransaction', ['uses' => 'TransMoneysController@getMonthTransaction', 'as' => 'getMonthTransaction']);
-Route::post('/monthtransaction', ['uses' => 'TransMoneysController@postMonthTransaction', 'as' => 'postMonthTransaction']);
+Route::get('/reportmonth', ['uses' => 'TransMoneysController@getReportMonth', 'as' => 'getReportMonth']);
+Route::post('/reportmonth', ['uses' => 'TransMoneysController@postReportMonth', 'as' => 'postReportMonth']);
+
+

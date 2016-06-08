@@ -32,6 +32,7 @@
                     <div class="form-group">
                         <label for="exampleInputName">Category Transaction</label>
                             <select class="form-control" name="category_id">
+                            <option value="">Select Category</option>
                             @foreach($categories as $var)
                             <option value="{!! $var->id !!}">{!! $var->name !!}</option>
                             @endforeach
@@ -40,6 +41,7 @@
                     <div class="form-group">
                         <label for="exampleInputName">Walet Transaction</label>
                         <select class="form-control" name="wallet_id">
+                            <option value="">Select Wallet</option>
                             @foreach($wallets as $var)
                             <option value="{!! $var->id !!}">{!! $var->name !!}({!! $var->type_money !!})</option>
                             @endforeach
@@ -52,7 +54,7 @@
                     
                     <div class="form-group">
                         <label for="exampleInputName">Note</label>
-                        <input type="text" value="{{ $transaction->note }}" name="note" class="form-control"/>
+                        <textarea rows="4" cols="5" class="form-control" name="note" placeholder="Note...">{{ $transaction->note }}</textarea>
                     </div>
                     <button type="submit" class="btn btn-default">Update Transaction Money</button>
                 </form><!-- /form -->

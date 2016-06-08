@@ -10,6 +10,8 @@
     </head>
     <body>
         <div class="container">
+            <h1>Add Transaction</h1>
+            <hr>
             <div class="">
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
@@ -20,40 +22,27 @@
                         </ul>
                     </div>
                 @endif
-                <h1>Add Transaction</h1>
+                <?php echo link_to('/transactions', $title = 'Index Transaction' ,$parameters = array(), $secure = null); ?>
                 <hr>
-                <a href="{!! url('transactions') !!}">
-                    Index Transaction
-                </a>
-                <hr>
-                <form class="form-signin" method="post" action="/addtransaction">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {!! Form::open(array('url' => 'addtransaction','class'=>'form-signin')) !!}
                     <div class="form-group">
-                        <label for="exampleInputName">Category Transaction</label>
-                            <select class="form-control" name="category_id">
-                            @foreach($categories as $var)
-                            <option value="{!! $var->id !!}">{!! $var->name !!}</option>
-                            @endforeach
-                        </select>
+                        {!! Form::label('category_id','Category Transaction:') !!}
+                        {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputName">Walet Transaction</label>
-                        <select class="form-control" name="wallet_id">
-                            @foreach($wallets as $var)
-                            <option value="{!! $var->id !!}">{!! $var->name !!}({!! $var->type_money !!})</option>
-                            @endforeach
-                        </select>
+                        {!! Form::label('wallet_id','Walet Transaction:') !!}
+                        {!! Form::select('wallet_id', $wallets, null, ['class' => 'form-control']) !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputName">Money</label>
-                        <input type="text" name="money" class="form-control"/>
+                        {!! Form::label('money','Money:') !!}
+                        {!! Form::text('money',null, array('class'=>'form-control')) !!}
                     </div>                    
                     <div class="form-group">
-                        <label for="exampleInputName">Note</label>
-                        <input type="text" name="note" class="form-control"/>
+                        {!! Form::label('note','Note:') !!}
+                        {!! Form::textarea('note',null, array('class'=>'form-control','placeholder'=>'Note...')) !!}
                     </div>
-                    <button type="submit" class="btn btn-default">Create Transaction Money</button>
-                </form><!-- /form -->
+                    {!! Form::submit('Create Transaction Money',['class' => 'btn btn-success']) !!}
+                {!! Form::close() !!}
                 <hr>
             </div><!-- /card-container -->
         </div><!-- /container -->

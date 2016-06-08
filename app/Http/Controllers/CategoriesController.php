@@ -8,6 +8,7 @@ use App\Http\Requests;
 
 use Illuminate\Support\Facades\Auth;
 use Storage;
+use Validator;
 use App\Category;
 
 class CategoriesController extends Controller
@@ -22,6 +23,18 @@ class CategoriesController extends Controller
     }
     
     public function postAddCategory(Request $request) {
+        
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:categories',
+            'image'=> 'required|mimes:jpeg,jpg,png',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                        ->back()
+                        ->withErrors($validator);
+        }
+        
         $data_input = $request->all();
         if ($request->file('image')->isValid()) {
             $file = $request->file('image');
@@ -46,6 +59,25 @@ class CategoriesController extends Controller
     }
 
     public function postUpdateCategory(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'image'=> 'mimes:jpeg,jpg,png',
+        ]);
+        
+        
+        $id = $request->id;
+        $name = Category::where('id','!=',$id)->where('name',$request->name)->get();
+        if($name->count()){
+            return redirect()->back()->withErrors(
+                            'Name has been use. Please chose diffrent name!');
+        }
+
+        if ($validator->fails()) {
+            return redirect()
+                        ->back()
+                        ->withErrors($validator);
+        }
+        
         $image = '';
         if (!empty($request->file('image')) && $request->file('image')->isValid()) {
             $file = $request->file('image');
@@ -57,7 +89,6 @@ class CategoriesController extends Controller
             $image = $path . '/' . $file_name;
             $file->move($path, $file_name);
         }
-        $id = $request->id;
         if ($image == '') {
             $results = Category::where('id', $request->id)->update([
                 'name' => $request->name,

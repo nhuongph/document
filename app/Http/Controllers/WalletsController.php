@@ -26,6 +26,19 @@ class WalletsController extends Controller {
     }
 
     public function postAddWallet(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:wallets',
+            'money' => 'required|numeric',
+            'type_money'=> 'required',
+            'image'=> 'required|mimes:jpeg,jpg,png',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                        ->back()
+                        ->withErrors($validator);
+        }
+        
         $data_input = $request->all();
         if ($request->file('image')->isValid()) {
             $file = $request->file('image');
@@ -69,6 +82,28 @@ class WalletsController extends Controller {
     }
 
     public function postUpdateWallet(Request $request) {
+        
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'money' => 'required|numeric',
+            'type_money'=> 'required',
+            'image'=> 'mimes:jpeg,jpg,png',
+        ]);
+        
+        
+        $id = $request->id;
+        $name = Wallet::where('id','!=',$id)->where('name',$request->name)->get();
+        if($name->count()){
+            return redirect()->back()->withErrors(
+                            'Name has been use. Please chose diffrent name!');
+        }
+
+        if ($validator->fails()) {
+            return redirect()
+                        ->back()
+                        ->withErrors($validator);
+        }
+        
         $image = '';
         if (!empty($request->file('image')) && $request->file('image')->isValid()) {
             $file = $request->file('image');
@@ -80,13 +115,13 @@ class WalletsController extends Controller {
             $image = $path . '/' . $file_name;
             $file->move($path, $file_name);
         }
-        $id = $request->id;
         if ($image == '') {
             $results = Wallet::where('id', $request->id)->update([
                 'name' => $request->name,
                 'money' => $request->money,
                 'type_money' => $request->type_money,
                 'note' => $request->note,
+                'updated_at' => date('Y-m-d H:i:s')
             ]);
         } else {
             $results = Wallet::where('id', $request->id)->update([
@@ -95,6 +130,7 @@ class WalletsController extends Controller {
                 'type_money' => $request->type_money,
                 'note' => $request->note,
                 'image' => $image,
+                'updated_at' => date('Y-m-d H:i:s')
             ]);
         }
 //            dump($results);

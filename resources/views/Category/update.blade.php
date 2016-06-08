@@ -11,6 +11,8 @@
     <body>
         <div class="container">
             <div class="">
+                <h1>Update Category</h1>
+                <hr>
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
                         <ul>
@@ -20,8 +22,6 @@
                         </ul>
                     </div>
                 @endif
-                <h1>Update Category</h1>
-                <hr>
                 <a href="{!! url('category') !!}">
                     Index Category
                 </a>
@@ -42,7 +42,7 @@
                         <input type="file" id="exampleInputFile" name="image">
                         <p class="help-block">Avartar help your easy select Categories.</p>
                     </div>
-                    <button type="submit" class="btn btn-default">Register Category</button>
+                    <button type="submit" class="btn btn-default">Update Category</button>
                 </form><!-- /form -->
                 <hr>
             </div><!-- /card-container -->

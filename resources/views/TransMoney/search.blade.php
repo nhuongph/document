@@ -29,25 +29,30 @@
                     Index Transactions
                 </a>
                 <hr>
-                <form class="form-signin" method="post" action="/monthtransaction">
+                <form class="form-signin col-md-5" method="post" action="/seachreport">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group">
                         <label for="exampleInputName">Select Month Transaction</label>
                         <br>
-<!--                        <div class="input-append date" id="dpMonths" data-date="102/2012" data-date-format="mm/yyyy" data-date-viewmode="months" data-date-minviewmode="years">
-                            <input name="month" class="span2" size="16" type="text" value="02/2012" readonly="">
-				<span class="add-on"><i class="icon-calendar"></i></span>
-			</div>-->
-                        <input name="month" class="datepicker" data-date="102/2012" data-date-format="mm/yyyy" data-date-viewmode="months" data-date-minviewmode="years"/>
+                        <input name="date_search" class="datepicker form-control" data-date="102/2012" data-date-format="dd/mm/yyyy"/>
                         <script>
                             $('.datepicker').datepicker();
                         </script>
                     </div>
-                    <button type="submit" class="btn btn-default">Report Transaction</button>
+                    <div class="form-group">
+                        <label for="exampleInputName">Category Transaction</label>
+                        <select class="form-control" name="category_id">
+                            <option value="">Select category</option>
+                            @foreach($categories as $var)
+                            <option value="{!! $var->id !!}">{!! $var->name !!}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-default">Create Transaction Money</button>
                 </form><!-- /form -->
                 <hr>
                 @foreach($transmoneys as $var)
-                <div class="wallet">
+                <div class="wallet row col-md-12">
                     <hr>
                     <img id="profile-img" class="profile-img-card" src="{!! $var->image !!}" />
                     <div class="form-group">

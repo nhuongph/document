@@ -3,9 +3,12 @@
     <head>
         <title>Laravel</title>
 
+        <script src="{!! asset('js/jquery-1.11.3.min.js') !!}"></script>
         <link href="{!! asset('bootstrap/css/bootstrap.css') !!}" rel="stylesheet" type="text/css">
         <link href="{!! asset('css/category.css') !!}" rel="stylesheet" type="text/css">
+        <link href="{!! asset('datepicker/css/datepicker.css') !!}" rel="stylesheet" type="text/css">
         <script src="{!! asset('bootstrap/js/bootstrap.js') !!}"></script>
+        <script src="{!! asset('datepicker/js/bootstrap-datepicker.js') !!}"></script>
 
     </head>
     <body>
@@ -22,18 +25,27 @@
                     </div>
                 @endif
                 <hr>
-                <?php echo link_to('/addtransaction', $title = 'Add Transactions' ,$parameters = array(), $secure = null); ?>
-                <br>
-                <?php echo link_to('/seachreport', $title = 'Search Transactions' ,$parameters = array(), $secure = null); ?>
-                <br>
-                <?php echo link_to('/reportmonth', $title = 'Report Month' ,$parameters = array(), $secure = null); ?>
+                <a href="{!! url('transactions') !!}">
+                    Index Transactions
+                </a>
+                <hr>
+                {!! Form::open(array('url' => 'reportmonth','class'=>'form-signin col-md-5')) !!}
+                    <div class="form-group">
+                        {!! Form::label('month','Select Month Transaction:') !!}
+                        {!! Form::text('month',null, array('class'=>'datepicker form-control', 'data-date' => '102/2012' ,'data-date-format' => 'mm/yyyy', 'data-date-viewmode' => 'months', 'data-date-minviewmode'=>'years')) !!}
+                        <script>
+                            $('.datepicker').datepicker();
+                        </script>
+                    </div>
+                    {!! Form::submit('Month Report',['class' => 'btn btn-success']) !!}
+                {!! Form::close() !!}
                 <hr>
                 @foreach($transmoneys as $var)
-                <div class="wallet">
+                <div class="wallet row col-md-12">
                     <hr>
                     <img id="profile-img" class="profile-img-card" src="{!! $var->image !!}" />
                     <div class="form-group">
-                        {!! Form::label('category_id','Name Transactions:') !!}
+                        {!! Form::label('name','Name Transactions:') !!}
                         <br>
                         &nbsp;&nbsp;&nbsp;&nbsp;{!! $var->name !!}
                     </div>
@@ -46,18 +58,6 @@
                         {!! Form::label('money','Money:') !!}
                         <br>
                         &nbsp;&nbsp;&nbsp;&nbsp;{!! $var->money !!} &nbsp;{!! $var->type_money !!}
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label('action','Action:') !!}
-                        <br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="{!! url('updatetransaction') !!}/{!! $var->id !!}">.
-                            {!! Form::label('','',array('class'=>'glyphicon glyphicon-edit','aria-hidden'=>'true')) !!}
-                        </a>&nbsp;
-                        &nbsp;&nbsp;
-                        <a href="{!! url('deletetransaction') !!}/{!! $var->id !!}">
-                            {!! Form::label('','',array('class'=>'glyphicon glyphicon-remove','aria-hidden'=>'true')) !!}
-                        </a>
                     </div>
                 </div>
                 @endforeach
