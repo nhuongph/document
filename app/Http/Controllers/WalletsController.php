@@ -11,12 +11,11 @@ use Illuminate\Support\Facades\Auth;
 class WalletsController extends Controller {
 
     public function getWallet() {
-        $where = ['user_id' => Auth::user()->id, 'current' => 'yes'];
-        $current = Wallet::where($where)->first();
+        $current = Wallet::where('user_id',Auth::user()->id)->where('current','yes')->first();
         if (isset($current) && $current != "") {
-            $wallets = Wallet::where(['user_id' => Auth::user()->id])->where('id', '!=', $current->id)->get();
+            $wallets = Wallet::where(['user_id' => Auth::user()->id])->where('id', '!=', $current->id)->paginate(3);
         } else {
-            $wallets = Wallet::where(['user_id' => Auth::user()->id])->get();
+            $wallets = Wallet::where(['user_id' => Auth::user()->id])->paginate(3);
         }
         return view('Wallet.index')->with(['current' => $current, 'wallets' => $wallets]);
     }
@@ -27,12 +26,16 @@ class WalletsController extends Controller {
 
     public function postAddWallet(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:wallets',
+            'name' => 'required|min:4',
             'money' => 'required|numeric',
             'type_money'=> 'required',
             'image'=> 'required|mimes:jpeg,jpg,png',
         ]);
-
+        $check_name = Wallet::where('user_id',Auth::user()->id)->where('name',$request->name)->get();
+        if($check_name->count()){
+            return redirect()
+                        ->back()->withErrors('This Wallet was register!');
+        }
         if ($validator->fails()) {
             return redirect()
                         ->back()
@@ -93,7 +96,7 @@ class WalletsController extends Controller {
         
         
         $id = $request->id;
-        $name = Wallet::where('id','!=',$id)->where('name',$request->name)->get();
+        $name = Wallet::where('id','!=',$id)->where('user_id',Auth::user()->id)->where('name',$request->name)->get();
         if($name->count()){
             return redirect()->back()->withErrors(
                             'Name has been use. Please chose diffrent name!');
@@ -177,7 +180,7 @@ class WalletsController extends Controller {
         $trans = Wallet::where('id',$request->select_wallet)->first();
         $trans->money = $trans->money + $request->trans_money;
         $trans->save();
-        return redirect()->route('home')->withErrors('Transfer money complete!');
+        return redirect()->route('home')->withFlashSuccess(trans('Transfer money complete!'));
     }
 
     public function getDeleteWallet($id = null) {

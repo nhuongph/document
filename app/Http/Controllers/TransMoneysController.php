@@ -16,7 +16,7 @@ use Validator;
 class TransMoneysController extends Controller
 {
     public function getTransactions(){
-        $transmoneys = TransMoney::all();
+        $transmoneys = TransMoney::paginate(5);
         return view('TransMoney.index')->with('transmoneys',$transmoneys);
     }
     
@@ -28,8 +28,8 @@ class TransMoneysController extends Controller
     
     public function postAddTransaction(Request $request){
         $validator = Validator::make($request->all(), [
-            'category_id'=> 'required',
-            'wallet_id'=> 'required',
+            'category_id'=> 'required|numeric',
+            'wallet_id'=> 'required|numeric',
             'money'=> 'required|numeric',
         ]);
 
@@ -140,7 +140,7 @@ class TransMoneysController extends Controller
     
     public function postSearchReport(Request $request){
         $validator = Validator::make($request->all(), [
-            'date_search'=> 'date_format:dd/mm/yyyy',
+            'date_search'=> 'date_format:d/m/Y',
             'category_id'=> 'numeric',
         ]);
         

@@ -30,7 +30,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('password','Password:') !!}
-                        {!! Form::password('password', null, ['class' => 'form-control','placeholder'=>"PassWord"]) !!}
+                        {!! Form::password('password', ['class' => 'form-control','placeholder'=>"PassWord"]) !!}
                     </div>
                     {!! Form::submit('Sign in',['class' => 'btn btn-success']) !!}
                 {!! Form::close() !!}<!-- /form -->

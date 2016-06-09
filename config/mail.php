@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'from' => ['address' => 'gitlab@rikkeisoft.com', 'name' => 'Nhuong Pham'],
+    'from' => ['address' => 'fdffdfdf@rikkeisoft.com', 'name' => 'Nhuong Pham232'],
 
     /*
     |--------------------------------------------------------------------------

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Laravel</title>
-
+        <title>Laravel</title>        
+        <script src="{!! asset('js/jquery-1.11.3.min.js') !!}"></script>
         <link href="{!! asset('bootstrap/css/bootstrap.css') !!}" rel="stylesheet" type="text/css">
         <link href="{!! asset('css/default.css') !!}" rel="stylesheet" type="text/css">
         <script src="{!! asset('bootstrap/js/bootstrap.js') !!}"></script>
@@ -35,16 +35,17 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('password','Password:') !!}
-                        {!! Form::password('password', null, ['class' => 'form-control','placeholder'=>"Password"]) !!}
+                        {!! Form::password('password', ['class' => 'form-control','placeholder'=>"Password"]) !!}
                     </div>                
                     <div class="form-group">
                         {!! Form::label('password_confirmation','Re-Password:') !!}
-                        {!! Form::password('password_confirmation', null, ['class' => 'form-control','placeholder'=>"Re-Password"]) !!}
+                        {!! Form::password('password_confirmation', ['class' => 'form-control','placeholder'=>"Re-Password"]) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('avatar','Select your avatar:') !!}
-                        {!! Form::file('avatar') !!}
+                        {!! Form::file('avatar',['class'=>"btn btn-default btn-file form-control"]) !!}
                     </div>
+                    <?php echo link_to('/login', $title = 'Cancel' ,$parameters = array('class' => 'btn btn-success'), $secure = null); ?>
                     {!! Form::submit('Update',['class' => 'btn btn-success']) !!}
                 {!! Form::close() !!}<!-- /form -->
             </div><!-- /card-container -->

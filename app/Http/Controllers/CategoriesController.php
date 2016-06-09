@@ -14,7 +14,7 @@ use App\Category;
 class CategoriesController extends Controller
 {
     public function getCategories(){
-        $categories = Category::paginate(3);
+        $categories = Category::paginate(5);
         return view('Category.index')->with('categories',$categories);
     }
     
@@ -25,7 +25,7 @@ class CategoriesController extends Controller
     public function postAddCategory(Request $request) {
         
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:categories',
+            'name' => 'required|unique:categories|min:4',
             'image'=> 'required|mimes:jpeg,jpg,png',
         ]);
 
@@ -60,7 +60,7 @@ class CategoriesController extends Controller
 
     public function postUpdateCategory(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|min:4',
             'image'=> 'mimes:jpeg,jpg,png',
         ]);
         

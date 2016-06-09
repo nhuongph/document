@@ -23,29 +23,16 @@
                     </div>
                 @endif
                 <h1>Register</h1>
-                {!! Form::open(array('url' => 'register', 'files' => true, 'class'=>'form-signin')) !!}
-                    <div class="form-group">
-                        {!! Form::label('username','Username:') !!}
-                        {!! Form::text('username', null, ['class' => 'form-control','placeholder'=>"Username"]) !!}
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label('email','Email:') !!}
-                        {!! Form::text('email', null, ['class' => 'form-control','placeholder'=>"Email"]) !!}
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label('password','Password:') !!}
-                        {!! Form::password('password', null, ['class' => 'form-control','placeholder'=>"Password"]) !!}
-                    </div>                
-                    <div class="form-group">
-                        {!! Form::label('password_confirmation','Re-Password:') !!}
-                        {!! Form::password('password_confirmation', null, ['class' => 'form-control','placeholder'=>"Re-Password"]) !!}
-                    </div>
-                    <div class="form-group">
-                        {!! Form::label('avatar','Select your avatar:') !!}
-                        {!! Form::file('avatar') !!}
-                    </div>
-                    {!! Form::submit('Register',['class' => 'btn btn-success']) !!}
-                {!! Form::close() !!}<!-- /form -->
+                <form class="form-signin" method="post" action="register" enctype="multipart/form-data">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <span id="reauth-email" class="reauth-email"></span>
+                    <input name="username" id="inputUsername" class="form-control" placeholder="Username" autofocus>
+                    <input name="email" id="inputEmail" class="form-control" placeholder="Email">
+                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password">
+                    <input type="password" name="password_confirmation" id="inputPassword" class="form-control" placeholder="Re-Password">
+                    <input type="file" name="avatar" class="inputAvartar" />
+                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Register</button>
+                </form><!-- /form -->
                 <a href="{!! url('login') !!}" class="forgot-password">
                     Login!
                 </a>

@@ -25,7 +25,7 @@ class UserRequest extends Request
     {
         return [
             'username' => 'required|max:255|min:4',
-            'password' => 'required',
+            'password' => 'required|max:255|min:6',
         ];
     }
     
@@ -34,7 +34,7 @@ class UserRequest extends Request
         return [
             'username.required' => 'Username not empty',
             'username.max' => 'Username <255 character',
-            'username.min' => 'Username >4 character',
+            'username.min' => 'Username min 4 character',
             'password.required'  => 'Password not empty',
         ];
     }
