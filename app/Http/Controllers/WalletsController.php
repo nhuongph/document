@@ -48,6 +48,7 @@ class WalletsController extends Controller {
                 mkdir($path, 0777, true);
             }
             $data_input['image'] = $path . '/' . $file_name;
+            $data_input['user_id'] = Auth::user()->id;
             $file->move($path, $file_name);
         }
         if (Wallet::create($data_input)) {
@@ -147,7 +148,7 @@ class WalletsController extends Controller {
     public function getTransWallet($id = null) {
         $wallet = Wallet::where('id', $id)->first();
         if (isset($wallet)) {
-            $wallets = Wallet::where('user_id' , Auth::user()->id)->where('id', '!=', $id)->where('type_money', $wallet->type_money)->get();
+            $wallets = ['' => '--- Select ---'] + Wallet::where('user_id' , Auth::user()->id)->where('id', '!=', $id)->where('type_money', $wallet->type_money)->lists('name','id')->all();
 //            dump($wallets);
 //            exit(0);
             return view('Wallet.transwallet')->with(['wallet'=> $wallet,'wallets'=> $wallets]);

@@ -22,28 +22,25 @@
                         </ul>
                     </div>
                 @endif
-                <a href="{!! url('category') !!}">
-                    Index Category
-                </a>
+                <?php echo link_to('/category', $title = 'Index Category' ,$parameters = array(), $secure = null); ?>
                 <hr>
-                <form class="form-signin" method="post" action="/updatecategory" enctype="multipart/form-data">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="id" value="{{ $category->id }}">
+                {!! Form::open(array('url' => 'updatecategory', 'files' => true, 'class'=>'form-signin')) !!}
+                    {!! Form::hidden('id',$category->id) !!}
                     <div class="form-group">
-                        <label for="exampleInputName">Name Category</label>
-                        <input type="text" value="{!! $category->name !!}" class="form-control" id="nameWallet" placeholder="Name Category" name="name">
+                        {!! Form::label('category_id','Name Category') !!}
+                        {!! Form::text('name',$category->name, array('class'=>'form-control')) !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputNote">Note</label>
-                        <textarea rows="4" cols="5" class="form-control" name="note" placeholder="Note...">{!! $category->note !!}</textarea>
+                        {!! Form::label('note','Note') !!}
+                        {!! Form::textarea('note',$category->note, array('class'=>'form-control','placeholder'=>'Note...')) !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputFile">Select avatar for Categories</label>
-                        <input type="file" id="exampleInputFile" name="image">
+                        {!! Form::label('image','Select avatar for Categories') !!}
+                        {!! Form::file('image',null, array('class'=>'form-control')) !!}
                         <p class="help-block">Avartar help your easy select Categories.</p>
                     </div>
-                    <button type="submit" class="btn btn-default">Update Category</button>
-                </form><!-- /form -->
+                    {!! Form::submit('Update Category',['class' => 'btn btn-success']) !!}
+                {!! Form::close() !!}
                 <hr>
             </div><!-- /card-container -->
         </div><!-- /container -->

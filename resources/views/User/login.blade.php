@@ -23,13 +23,17 @@
                         </ul>
                     </div>
                 @endif
-                <form class="form-signin" method="post" action="login">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <span id="reauth-email" class="reauth-email"></span>
-                    <input name="username" id="inputUsername" class="form-control" placeholder="Username" autofocus>
-                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password">
-                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
-                </form><!-- /form -->
+                {!! Form::open(array('url' => '/login','class'=>'form-signin')) !!}
+                    <div class="form-group">
+                        {!! Form::label('username','Username:') !!}
+                        {!! Form::text('username', null, ['class' => 'form-control','placeholder'=>"Username"]) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('password','Password:') !!}
+                        {!! Form::password('password', null, ['class' => 'form-control','placeholder'=>"PassWord"]) !!}
+                    </div>
+                    {!! Form::submit('Sign in',['class' => 'btn btn-success']) !!}
+                {!! Form::close() !!}<!-- /form -->
                 <a href="{!! url('password/email') !!}" class="forgot-password">
                     Forgot the password?
                 </a>

@@ -23,17 +23,30 @@
                         </ul>
                     </div>
                 @endif
-                <form class="form-signin" method="post" action="/update" enctype="multipart/form-data">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="id" value="{{ $user['id'] }}">
-                    <span id="reauth-email" class="reauth-email"></span>
-                    <input name="username" value="{{ $user['username'] }}" id="inputUsername" class="form-control" placeholder="Username" autofocus>
-                    <input name="email" value="{{ $user['email'] }}" id="inputEmail" class="form-control" placeholder="Email">
-                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password">
-                    <input type="password" name="password_confirmation" id="inputPassword" class="form-control" placeholder="Re-Password">
-                    <input type="file" name="avatar" class="inputAvartar" />
-                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Update</button>
-                </form><!-- /form -->
+                {!! Form::open(array('url' => 'update', 'files' => true, 'class'=>'form-signin')) !!}
+                    {!! Form::hidden('id',$user->id) !!}
+                    <div class="form-group">
+                        {!! Form::label('username','Username:') !!}
+                        {!! Form::text('username', $user->username, ['class' => 'form-control','placeholder'=>"Username"]) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('email','Email:') !!}
+                        {!! Form::text('email', $user->email, ['class' => 'form-control','placeholder'=>"Email"]) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('password','Password:') !!}
+                        {!! Form::password('password', null, ['class' => 'form-control','placeholder'=>"Password"]) !!}
+                    </div>                
+                    <div class="form-group">
+                        {!! Form::label('password_confirmation','Re-Password:') !!}
+                        {!! Form::password('password_confirmation', null, ['class' => 'form-control','placeholder'=>"Re-Password"]) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('avatar','Select your avatar:') !!}
+                        {!! Form::file('avatar') !!}
+                    </div>
+                    {!! Form::submit('Update',['class' => 'btn btn-success']) !!}
+                {!! Form::close() !!}<!-- /form -->
             </div><!-- /card-container -->
         </div><!-- /container -->
     </body>

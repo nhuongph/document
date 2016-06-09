@@ -47,7 +47,7 @@ class UserController extends Controller
         if ($request->file('avatar')->isValid()) {
             $file = $request->file('avatar');
             $file_name = $data_input['username'].'.jpg';
-            $path = "uploads/".Auth::user()->username;
+            $path = "uploads/".$request->username;
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }

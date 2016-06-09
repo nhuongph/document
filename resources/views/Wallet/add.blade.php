@@ -24,37 +24,30 @@
                         </ul>
                     </div>
                 @endif
-                <form class="form-signin" method="post" action="addwallet" enctype="multipart/form-data">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                {!! Form::open(array('url' => 'addwallet', 'files' => true, 'class'=>'form-signin')) !!}
                     <div class="form-group">
-                        <label for="exampleInputName">Name Wallet</label>
-                        <input type="text" class="form-control" id="nameWallet" placeholder="Name Wallet" name="name">
+                        {!! Form::label('name','Name Wallet:') !!}
+                        {!! Form::text('name',null, array('class'=>'form-control','placeholder'=>'Name Wallet')) !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputMoney">Money</label>
-                        <input type="text" class="form-control" id="nameWallet" placeholder="Your Money" name="money">
+                        {!! Form::label('money','Money:') !!}
+                        {!! Form::text('money',null, array('class'=>'form-control','placeholder'=>'Your Money')) !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputTypeMoney">Type Money</label>
-                        <select name="type_money" class="form-control">
-                            <option value="">---</option>
-                            <option value="đ">đ</option>
-                            <option value="$">$</option>
-                            <option value="£">£</option>
-                        </select>
+                        {!! Form::label('type_money','Type Money:') !!}
+                        {!! Form::select('type_money', [''=>'--- Select ---','đ'=>'đ','$'=>'$','£'=>'£'], null, ['class' => 'form-control']) !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputNote">Note</label>
-                        <textarea rows="4" cols="5" class="form-control" name="note" placeholder="Note..."></textarea>
+                        {!! Form::label('note','Note:') !!}
+                        {!! Form::textarea('note', null, ['class' => 'form-control','placeholder'=>"Note..."]) !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputFile">Select avatar for Wallet</label>
-                        <input type="file" id="exampleInputFile" name="image">
+                        {!! Form::label('image','Select avatar for Wallet:') !!}
+                        {!! Form::file('image') !!}
                         <p class="help-block">Avartar help your easy select Wallet.</p>
                     </div>
-                    <button type="submit" class="btn btn-default">Register Wallet</button>
-                </form><!-- /form -->
+                    {!! Form::submit('Register Wallet',['class' => 'btn btn-success']) !!}
+                {!! Form::close() !!}<!-- /form -->
             </div><!-- /card-container -->
         </div><!-- /container -->
     </body>

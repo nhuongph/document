@@ -90,15 +90,17 @@ class CategoriesController extends Controller
             $file->move($path, $file_name);
         }
         if ($image == '') {
-            $results = Category::where('id', $request->id)->update([
+            $results = Category::where('id', $id)->update([
                 'name' => $request->name,
                 'note' => $request->note,
+                'updated_at' => date('Y-m-d H:i:s')
             ]);
         } else {
-            $results = Category::where('id', $request->id)->update([
+            $results = Category::where('id', $id)->update([
                 'name' => $request->name,
                 'note' => $request->note,
                 'image' => $image,
+                'updated_at' => date('Y-m-d H:i:s')
             ]);
         }
 //            dump($results);

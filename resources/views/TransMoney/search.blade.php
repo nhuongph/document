@@ -29,34 +29,27 @@
                     Index Transactions
                 </a>
                 <hr>
-                <form class="form-signin col-md-5" method="post" action="/seachreport">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {!! Form::open(array('url' => 'seachreport','class'=>'form-signin col-md-5')) !!}
                     <div class="form-group">
-                        <label for="exampleInputName">Select Month Transaction</label>
-                        <br>
-                        <input name="date_search" class="datepicker form-control" data-date="102/2012" data-date-format="dd/mm/yyyy"/>
+                        {!! Form::label('date_search','Select Month Transaction:') !!}
+                        {!! Form::text('date_search',null, array('class'=>'datepicker form-control', 'data-date' => '102/2012' ,'data-date-format' => 'dd/mm/yyyy')) !!}
                         <script>
                             $('.datepicker').datepicker();
                         </script>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputName">Category Transaction</label>
-                        <select class="form-control" name="category_id">
-                            <option value="">Select category</option>
-                            @foreach($categories as $var)
-                            <option value="{!! $var->id !!}">{!! $var->name !!}</option>
-                            @endforeach
-                        </select>
+                        {!! Form::label('category_id','Category Transaction:') !!}
+                        {!! Form::select('category_id', $categories, null, ['class' => 'form-control']) !!}
                     </div>
-                    <button type="submit" class="btn btn-default">Create Transaction Money</button>
-                </form><!-- /form -->
+                    {!! Form::submit('Search Transaction',['class' => 'btn btn-success']) !!}
+                {!! Form::close()!!}
                 <hr>
                 @foreach($transmoneys as $var)
                 <div class="wallet row col-md-12">
                     <hr>
                     <img id="profile-img" class="profile-img-card" src="{!! $var->image !!}" />
                     <div class="form-group">
-                        <label for="exampCategory">Name Transactions:</label>
+                        {!! Form::label('name','Name Transactions:') !!}
                         <br>
                         &nbsp;&nbsp;&nbsp;&nbsp;{!! $var->name !!}
                     </div>
@@ -66,19 +59,9 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;{!! $var->note !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampCategory">Money</label>
+                        {!! Form::label('money','Money:') !!}
                         <br>
                         &nbsp;&nbsp;&nbsp;&nbsp;{!! $var->money !!} &nbsp;{!! $var->type_money !!}
-                    </div>
-                    <div class="form-group">
-                        <label for="exampCategory">Action:</label>
-                        <br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;<a href="{!! url('updatetransaction') !!}/{!! $var->id !!}">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                        </a>&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;<a href="{!! url('deletetransaction') !!}/{!! $var->id !!}">
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                        </a>
                     </div>
                 </div>
                 @endforeach

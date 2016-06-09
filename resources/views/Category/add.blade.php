@@ -26,23 +26,22 @@
                     Index Category
                 </a>
                 <hr>
-                <form class="form-signin" method="post" action="addcategory" enctype="multipart/form-data">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {!! Form::open(array('url' => 'addcategory', 'files' => true, 'class'=>'form-signin')) !!}
                     <div class="form-group">
-                        <label for="exampleInputName">Name Category</label>
-                        <input type="text" class="form-control" id="nameWallet" placeholder="Name Category" name="name">
+                        {!! Form::label('category_id','Name Category') !!}
+                        {!! Form::text('name',null, array('class'=>'form-control')) !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputNote">Note</label>
-                        <textarea rows="4" cols="5" class="form-control" name="note" placeholder="Note..."></textarea>
+                        {!! Form::label('note','Note') !!}
+                        {!! Form::textarea('note',null, array('class'=>'form-control','placeholder'=>'Note...')) !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputFile">Select avatar for Categories</label>
-                        <input type="file" id="exampleInputFile" name="image">
+                        {!! Form::label('image','Select avatar for Categories') !!}
+                        {!! Form::file('image',null, array('class'=>'form-control')) !!}
                         <p class="help-block">Avartar help your easy select Categories.</p>
                     </div>
-                    <button type="submit" class="btn btn-default">Create Category</button>
-                </form><!-- /form -->
+                    {!! Form::submit('Create Category',['class' => 'btn btn-success']) !!}
+                {!! Form::close() !!}
                 <hr>
             </div><!-- /card-container -->
         </div><!-- /container -->

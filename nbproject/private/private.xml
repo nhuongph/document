@@ -12,12 +12,11 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/html/laravel_training/nhuongph_money_lover/resources/views/TransMoney/add.blade.php</file>
-            <file>file:/var/www/html/laravel_training/nhuongph_money_lover/app/Http/routes.php</file>
-            <file>file:/var/www/html/laravel_training/nhuongph_money_lover/resources/views/TransMoney/index.blade.php</file>
-            <file>file:/var/www/html/laravel_training/nhuongph_money_lover/resources/views/TransMoney/month.blade.php</file>
-            <file>file:/var/www/html/laravel_training/nhuongph_money_lover/resources/views/TransMoney/update.blade.php</file>
-            <file>file:/var/www/html/laravel_training/nhuongph_money_lover/app/Http/Controllers/TransMoneysController.php</file>
+            <file>file:/D:/Xampp/htdocs/document/resources/views/User/register.blade.php</file>
+            <file>file:/D:/Xampp/htdocs/document/resources/views/User/update.blade.php</file>
+            <file>file:/D:/Xampp/htdocs/document/app/Http/routes.php</file>
+            <file>file:/D:/Xampp/htdocs/document/app/Http/Controllers/TransMoneysController.php</file>
+            <file>file:/D:/Xampp/htdocs/document/resources/views/Wallet/add.blade.php</file>
         </group>
     </open-files>
 </project-private>

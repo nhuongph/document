@@ -26,10 +26,10 @@
                         </ul>
                     </div>
                 @endif
-                <form class="form-signin" method="post" action="/transwallet">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                {!! Form::open(array('url' => 'transwallet','class'=>'form-signin')) !!}
                     <div class="wallet">
                         <input type="hidden" name="id" value="{!! $wallet->id !!}">
+                        {!! Form::hidden('id', $wallet->id) !!}
                         <table class="table">
                             <tr>
                                 <td><img id="profile-img" class="profile-img-card" src="{!! url($wallet->image) !!}" /></td>
@@ -47,18 +47,14 @@
                             <table class="table table-hover">
                                 <h2>Transfer money</h2>
                                 <div class="form-group">
-                                    <label for="exampleSelectWallet">Select Wallet for transfer</label>
-                                    <select name='select_wallet' class="form-control">
-                                        @foreach($wallets as $var)
-                                            <option value="{!! $var->id !!}">{!! $var->name !!}</option>
-                                        @endforeach
-                                    </select>
+                                    {!! Form::label('select_wallet','Select Wallet for transfer:') !!}
+                                    {!! Form::select('select_wallet', $wallets, null, ['class' => 'form-control']) !!}
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleSelectWallet">Input money</label>
-                                    <input type="text" name='trans_money' class="form-control"/>
+                                    {!! Form::label('trans_money','Input money:') !!}
+                                    {!! Form::text('trans_money',null, array('class'=>'form-control')) !!}
                                 </div>
-                                <tr><td><button type="submit" class="btn btn-default">Transfer Money</button></td></tr>
+                                {!! Form::submit('Transfer Money',['class' => 'btn btn-success']) !!}
                             </table>
                         </div>
                 </form><!-- /form -->

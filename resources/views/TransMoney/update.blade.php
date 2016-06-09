@@ -26,38 +26,27 @@
                     Index Transaction
                 </a>
                 <hr>
-                <form class="form-signin" method="post" action="/updatetransaction">
-                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="id" value="{{ $transaction->id }}">
+                {!! Form::open(array('url' => '/updatetransaction','class'=>'form-signin')) !!}
+                    {!! Form::hidden('id', $transaction->id) !!}
                     <div class="form-group">
-                        <label for="exampleInputName">Category Transaction</label>
-                            <select class="form-control" name="category_id">
-                            <option value="">Select Category</option>
-                            @foreach($categories as $var)
-                            <option value="{!! $var->id !!}">{!! $var->name !!}</option>
-                            @endforeach
-                        </select>
+                        {!! Form::label('category_id','Category Transaction:') !!}
+                        {!! Form::select('category_id', $categories, $transaction->category_id, ['class' => 'form-control']) !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputName">Walet Transaction</label>
-                        <select class="form-control" name="wallet_id">
-                            <option value="">Select Wallet</option>
-                            @foreach($wallets as $var)
-                            <option value="{!! $var->id !!}">{!! $var->name !!}({!! $var->type_money !!})</option>
-                            @endforeach
-                        </select>
+                        {!! Form::label('wallet_id','Walet Transaction:') !!}
+                        {!! Form::select('wallet_id', $wallets, $transaction->wallet_id, ['class' => 'form-control']) !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputName">Money</label>
-                        <input type="text" value="{{ $transaction->money }}" name="money" class="form-control"/>
+                        {!! Form::label('money','Money:') !!}
+                        {!! Form::text('money',$transaction->money, array('class'=>'form-control')) !!}
                     </div>
                     
                     <div class="form-group">
-                        <label for="exampleInputName">Note</label>
-                        <textarea rows="4" cols="5" class="form-control" name="note" placeholder="Note...">{{ $transaction->note }}</textarea>
+                        {!! Form::label('note','Note:') !!}
+                        {!! Form::textarea('note',$transaction->note, array('class'=>'form-control','placeholder'=>'Note...')) !!}
                     </div>
-                    <button type="submit" class="btn btn-default">Update Transaction Money</button>
-                </form><!-- /form -->
+                    {!! Form::submit('Update Transaction Money',['class' => 'btn btn-success']) !!}
+                {!! Form::close() !!}
                 <hr>
             </div><!-- /card-container -->
         </div><!-- /container -->

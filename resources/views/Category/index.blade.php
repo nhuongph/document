@@ -22,31 +22,31 @@
                     </div>
                 @endif
                 <hr>
-                <a href="{!! url('addcategory') !!}">
-                    Add Category
-                </a>
+                <?php echo link_to('/addcategory', $title = 'Add Category' ,$parameters = array(), $secure = null); ?>
                 <hr>
                 @foreach($categories as $var)
                 <div class="wallet">
                     <hr>
                     <img id="profile-img" class="profile-img-card" src="{!! $var->image !!}" />
                     <div class="form-group">
-                        <label for="exampCategory">Name Category:</label>
+                        {!! Form::label('name','Name Category:') !!}
                         <br>
                         &nbsp;&nbsp;&nbsp;&nbsp;{!! $var->name !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampCategory">Note:</label>
+                        {!! Form::label('note','Note:') !!}
                         <br>
                         &nbsp;&nbsp;&nbsp;&nbsp;{!! $var->note !!}
                     </div>
                     <div class="form-group">
-                        <label for="exampCategory">Action:</label>
+                        {!! Form::label('action','Action:') !!}
                         <br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;<a href="{!! url('updatecategory') !!}/{!! $var->id !!}">
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="{!! url('updatecategory') !!}/{!! $var->id !!}">
                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                        </a>&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;<a href="{!! url('deletecategory') !!}/{!! $var->id !!}">
+                        </a>
+                        &nbsp;&nbsp;
+                        <a href="{!! url('deletecategory') !!}/{!! $var->id !!}">
                             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                         </a>
                     </div>

@@ -68,8 +68,8 @@ class TransMoneysController extends Controller
     
     public function getUpdateTransaction($id = null) {
         $transaction = TransMoney::where('id',$id)->first();
-        $categories = Category::all();
-        $wallets = Wallet::where('user_id',Auth::user()->id)->get();
+        $categories = ['' => '--- Select ---'] + Category::lists('name','id')->all();
+        $wallets = ['' => '--- Select ---'] + Wallet::where('user_id',Auth::user()->id)->lists('name','id')->all();
         return view('TransMoney.update')->with(['transaction'=> $transaction,'categories'=>$categories,'wallets'=>$wallets]);
     }
 
@@ -134,7 +134,7 @@ class TransMoneysController extends Controller
     
     public function getSearchReport(){
         $transmoneys = TransMoney::all();
-        $categories = Category::all();
+        $categories = ['' => '--- Select ---'] + Category::lists('name','id')->all();
         return view('TransMoney.search')->with(['transmoneys'=>$transmoneys,'categories'=>$categories]);
     }
     
@@ -169,7 +169,7 @@ class TransMoneysController extends Controller
         }else{
             $transmoneys = TransMoney::all();
         }
-        $categories = Category::all();
+        $categories = ['' => '--- Select ---'] + Category::lists('name','id')->all();
         return view('TransMoney.search')->with(['transmoneys'=>$transmoneys,'categories'=>$categories]);
     }
     
