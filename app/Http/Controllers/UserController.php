@@ -17,7 +17,7 @@ class UserController extends Controller {
         if (!Auth::check()) {
             return view("User.login");
         } else {
-            return redirect()->route('home');
+            return redirect('home');
         }
     }
 
@@ -28,7 +28,7 @@ class UserController extends Controller {
             'active' => 'yes',
         );
         if (Auth::attempt($login)) {
-            return redirect()->route('home');
+            return redirect('home');
         } else {
             return redirect()->back()->withErrors('Username or Password fail!');
         }
@@ -36,7 +36,7 @@ class UserController extends Controller {
 
     public function getLogout() {
         Auth::logout();
-        return redirect()->route('getLogin');
+        return redirect('/');
     }
 
     public function getRegister() {
@@ -130,7 +130,7 @@ class UserController extends Controller {
                 'updated_at' => new DateTime(),
             ]);
         }
-        return redirect()->route('home');
+        return redirect('home');
     }
 
 }

@@ -19,7 +19,7 @@ class TransMoneysTableSeeder extends Seeder
                         'image' => 'uploads/foot.jpg',
                         'category_id'=>'1',
                         'wallet_id'=>'3',
-                        'money'=>'10000',
+                        'money'=>'-10000',
                         'type_money'=>'đ',
                         'created_at' => new DateTime(),
                         'updated_at' => new DateTime()
@@ -28,9 +28,9 @@ class TransMoneysTableSeeder extends Seeder
                         'name' => 'Foot & Bevegate',
                         'note' => 'Eat KFC',
                         'image' => 'uploads/foot.jpg',
-                        'category_id'=>'1',
+                        'category_id'=>'2',
                         'wallet_id'=>'3',
-                        'money'=>'20000',
+                        'money'=>'-20000',
                         'type_money'=>'đ',
                         'created_at' => new DateTime(),
                         'updated_at' => new DateTime()

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class WalletsController extends Controller {
 
     public function getWallet() {
-        $current = Wallet::where('user_id',Auth::user()->id)->where('current','yes')->first();
+        $current = Wallet::where('user_id', Auth::user()->id)->where('current', 'yes')->first();
         if (isset($current) && $current != "") {
             $wallets = Wallet::where(['user_id' => Auth::user()->id])->where('id', '!=', $current->id)->paginate(3);
         } else {
@@ -26,27 +26,28 @@ class WalletsController extends Controller {
 
     public function postAddWallet(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:4',
-            'money' => 'required|numeric',
-            'type_money'=> 'required',
-            'image'=> 'required|mimes:jpeg,jpg,png',
+                    'name' => 'required|min:4',
+                    'money' => 'required|numeric|min:0',
+                    'type_money' => 'required',
+                    'image' => 'required|mimes:jpeg,jpg,png',
         ]);
-        $check_name = Wallet::where('user_id',Auth::user()->id)->where('name',$request->name)->get();
-        if($check_name->count()){
+        $user_id = Auth::user()->id;
+        $check_name = Wallet::where('user_id', $user_id)->where('name', $request->name)->get();
+        if ($check_name->count()) {
             return redirect()
-                        ->back()->withErrors('This Wallet was register!');
+                            ->back()->withErrors('This Wallet was register. Please chose new name!');
         }
         if ($validator->fails()) {
             return redirect()
-                        ->back()
-                        ->withErrors($validator);
+                            ->back()
+                            ->withErrors($validator);
         }
-        
+
         $data_input = $request->all();
         if ($request->file('image')->isValid()) {
             $file = $request->file('image');
             $file_name = $data_input['name'] . '.jpg';
-            $path = "uploads/" . Auth::user()->username.'/wallet';
+            $path = "uploads/" . Auth::user()->username . '/wallet';
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }
@@ -86,28 +87,28 @@ class WalletsController extends Controller {
     }
 
     public function postUpdateWallet(Request $request) {
-        
+
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'money' => 'required|numeric',
-            'type_money'=> 'required',
-            'image'=> 'mimes:jpeg,jpg,png',
+                    'name' => 'required',
+                    'money' => 'required|numeric|min:0',
+                    'type_money' => 'required',
+                    'image' => 'mimes:jpeg,jpg,png',
         ]);
-        
-        
+
+
         $id = $request->id;
-        $name = Wallet::where('id','!=',$id)->where('user_id',Auth::user()->id)->where('name',$request->name)->get();
-        if($name->count()){
+        $name = Wallet::where('id', '!=', $id)->where('user_id', Auth::user()->id)->where('name', $request->name)->get();
+        if ($name->count()) {
             return redirect()->back()->withErrors(
                             'Name has been use. Please chose diffrent name!');
         }
 
         if ($validator->fails()) {
             return redirect()
-                        ->back()
-                        ->withErrors($validator);
+                            ->back()
+                            ->withErrors($validator);
         }
-        
+
         $image = '';
         if (!empty($request->file('image')) && $request->file('image')->isValid()) {
             $file = $request->file('image');
@@ -151,33 +152,40 @@ class WalletsController extends Controller {
     public function getTransWallet($id = null) {
         $wallet = Wallet::where('id', $id)->first();
         if (isset($wallet)) {
-            $wallets = ['' => '--- Select ---'] + Wallet::where('user_id' , Auth::user()->id)->where('id', '!=', $id)->where('type_money', $wallet->type_money)->lists('name','id')->all();
+            $wallets = ['' => '--- Select ---'] + Wallet::where('user_id', Auth::user()->id)->where('id', '!=', $id)->where('type_money', $wallet->type_money)->lists('name', 'id')->all();
 //            dump($wallets);
 //            exit(0);
-            return view('Wallet.transwallet')->with(['wallet'=> $wallet,'wallets'=> $wallets]);
+            return view('Wallet.transwallet')->with(['wallet' => $wallet, 'wallets' => $wallets]);
         } else {
             return redirect()->back()->withErrors("No find wallet. please try again!");
         }
     }
 
     public function postTransWallet(Request $request) {
-        
+
         $validator = Validator::make($request->all(), [
-            'id' => 'required',
-            'trans_money' => 'required|numeric',
-            'select_wallet'=> 'required',
+                    'id' => 'required',
+                    'trans_money' => 'required|numeric|min:0',
+                    'select_wallet' => 'required',
         ]);
+        $money = $request->trans_money;
+        $wallet = Wallet::where('id',$request->id)->first();
+        if (($wallet->money - $money) < 0) {
+            return redirect()
+                            ->back()
+                            ->withErrors('The amount you enter larger the amount you have in your wallet!');
+        }
 
         if ($validator->fails()) {
             return redirect()
-                        ->back()
-                        ->withErrors($validator);
+                            ->back()
+                            ->withErrors($validator);
         }
-        
-        $current = Wallet::where('id',$request->id)->first();
+
+        $current = Wallet::where('id', $request->id)->first();
         $current->money = $current->money - $request->trans_money;
         $current->save();
-        $trans = Wallet::where('id',$request->select_wallet)->first();
+        $trans = Wallet::where('id', $request->select_wallet)->first();
         $trans->money = $trans->money + $request->trans_money;
         $trans->save();
         return redirect()->route('home')->withFlashSuccess(trans('Transfer money complete!'));

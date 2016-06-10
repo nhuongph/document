@@ -82,8 +82,8 @@
                         {!! Form::select('wallet_id', $wallets, null, ['class' => 'form-control']) !!}
                     </div>
                     <div class="form-group">
-                        {!! Form::label('money','Money:') !!}
-                        {!! Form::text('money',null, array('class'=>'form-control')) !!}
+                        {!! Form::label('money',"Money:") !!}
+                        {!! Form::text('money',null, array('class'=>'form-control','placeholder'=>"If you give money, add character '-', ex:-100")) !!}
                     </div>                    
                     <div class="form-group">
                         {!! Form::label('note','Note:') !!}

@@ -14,7 +14,7 @@ class UsersTableSeeder extends Seeder {
                 [
                     [
                         'username' => 'admin',
-                        'password' => bcrypt('12345'),
+                        'password' => bcrypt('123456'),
                         'email' => 'admin@admin',
                         'avatar' => 'uploads/uber.jpg',
                         'active' => 'yes',
@@ -23,7 +23,7 @@ class UsersTableSeeder extends Seeder {
                     ],
                     [
                         'username' => 'nhuongph',
-                        'password' => bcrypt('12345'),
+                        'password' => bcrypt('123456'),
                         'email' => 'nhuongph@rikkeisoft.com',
                         'avatar' => 'uploads/nhuongph/nhuongph.jpg',
                         'active' => 'yes',

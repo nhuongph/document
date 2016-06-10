@@ -84,7 +84,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('money','Money:') !!}
-                        {!! Form::text('money',$transaction->money, array('class'=>'form-control')) !!}
+                        {!! Form::text('money',$transaction->money, array('class'=>'form-control','placeholder'=>"If you give money, add character '-', ex:-100")) !!}
                     </div>
                     
                     <div class="form-group">
