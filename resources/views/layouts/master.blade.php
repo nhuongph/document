@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="logo-right">
-                Xin Chào {{ Auth::user()->username }} | <a href="{!! url('logout') !!}">Logout</a>
+                Xin Chào {{ Auth::user()->username }} | <a href="{!! url('wellcome/vi') !!}">Việt Nam</a> &nbsp;<a href="{!! url('wellcome/en') !!}">English</a> | <a href="{!! url('logout') !!}">Logout</a>
             </div>
         </section>
         <!-- End Logo Section -->

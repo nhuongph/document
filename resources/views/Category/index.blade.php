@@ -1,111 +1,149 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Laravel</title>
+<html lang="en">
 
-        <script src="{!! asset('js/jquery-1.11.3.min.js') !!}"></script>
-        <link href="{!! asset('bootstrap/css/bootstrap.css') !!}" rel="stylesheet" type="text/css">
-        <link href="{!! asset('css/mycss.css') !!}" rel="stylesheet" type="text/css">
-        <script src="{!! asset('bootstrap/js/bootstrap.js') !!}"></script>
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Money love - Manager you money</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+        <!-- Font Awesome CSS -->
+        <link href="{{ asset('layouts/css/font-awesome.min.css') }}" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="{{ asset('layouts/css/animate.css') }}" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="{{ asset('layouts/css/style.css') }}" rel="stylesheet">
+
+        <!-- NhuongPH CSS -->
+        <link href="{{ asset('layouts/css/mycss.css') }}" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href='{{ asset('layouts/css/font-Lobster.css') }}' rel='stylesheet' type='text/css'>
+
+
+        <!-- Template js -->
+        <script src="{{ asset('layouts/js/jquery-2.1.1.min.js') }}"></script>
+        <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('layouts/js/jquery.appear.js') }}"></script>
+        <script src="{{ asset('layouts/js/jqBootstrapValidation.js') }}"></script>
+        <script src="{{ asset('layouts/js/modernizr.custom.js') }}"></script>
+        <script src="{{ asset('layouts/js/script.js') }}"></script>
+
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
     </head>
-    <body>
-        <div class="container">
-            <div class="">
-                <h1>Categories</h1>
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                <hr>
-                <nav class="navbar navbar-default">
-                    <div class="container-fluid">
-                      <!-- Brand and toggle get grouped for better mobile display -->
-                      <div class="navbar-header">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                          <span class="sr-only">Toggle navigation</span>
-                          <span class="icon-bar"></span>
-                          <span class="icon-bar"></span>
-                          <span class="icon-bar"></span>
-                        </button>
-                        <a class="navbar-brand" href="{!! url('home') !!}">Money Lover</a>
-                      </div>
 
-                      <!-- Collect the nav links, forms, and other content for toggling -->
-                      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                          <li class="dropdown">
-                            <a href="{!! url('home') !!}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Wallets <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{!! url('home') !!}">All Wallets</a></li>
-                                <li><a href="{!! url('addwallet') !!}">New Wallet</a></li>                              
-                            </ul>
-                          </li>
-                          <li class="dropdown active">
-                            <a href="{!! url('category') !!}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{!! url('category') !!}">All Wallets</a></li>     
-                                <li><a href="{!! url('addcategory') !!}">New Categories</a></li>                              
-                            </ul>
-                          </li>
-                          <li class="dropdown">
-                            <a href="{!! url('transactions') !!}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Transactions Money <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{!! url('transactions') !!}">All Transactions</a></li>    
-                                <li><a href="{!! url('addtransaction') !!}">New Transaction</a></li>  
-                                <li><a href="{!! url('seachreport') !!}">Search Transactions</a></li>    
-                                <li><a href="{!! url('reportmonth') !!}">Report Month</a></li>     
-                            </ul>
-                          </li>
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="{!! url('update') !!}/{!! Auth::user()->username !!}">Update user</a></li>
-                            <li><a href="{!! url('logout') !!}">Logout</a></li>
-                        </ul>
-                      </div><!-- /.navbar-collapse -->
-                    </div><!-- /.container-fluid -->
-                  </nav>
-                <!--*******************-->
-                
-                
-                @foreach($categories as $var)
-                <div class="category">
-                    <table>
-                    <hr>
-                    <img id="profile-img" class="profile-img-card" src="{!! $var->image !!}" />
-                    <tr><th>
-                        {!! Form::label('name','Name Category:') !!}
-                        </th><td>
-                        &nbsp;&nbsp;&nbsp;&nbsp;{!! $var->name !!}
-                    </td></tr>
-                    <tr><th>
-                        {!! Form::label('note','Note:') !!}
-                        </th><td>
-                        &nbsp;&nbsp;&nbsp;&nbsp;{!! $var->note !!}
-                    </td></tr>
-                    <tr><th>
-                        {!! Form::label('action','Action:') !!}
-                        </th><td>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="{!! url('updatecategory') !!}/{!! $var->id !!}">
-                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                        </a>
-                        &nbsp;&nbsp;
-                        <a href="{!! url('deletecategory') !!}/{!! $var->id !!}">
-                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                        </a>
-                        </td></tr>    
-                    </table>
+    <body>
+
+        <!-- Start Logo Section -->
+        <section id="logo-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="logo text-center">
+                            <h1>Money Lover</h1>
+                            <span>Manager You Money</span>
+                        </div>
+                    </div>
                 </div>
-                @endforeach            
-                <hr>
-            </div><!-- /card-container -->
-            {!! $categories->links() !!}
-        </div><!-- /container -->
-    </body>
+            </div>
+            <div class="logo-right container">
+                <?php if (Auth::check()) { ?>
+                    {{ trans('home.welcome',['name' => Auth::user()->username]) }} | <a href="{!! url('welcome/vi') !!}">Việt Nam</a> &nbsp;<a href="{!! url('welcome/en') !!}">English</a> | <a href="{!! url('logout') !!}">Logout</a>
+                <?php } ?>
+            </div>
+        </section>
+        <!-- End Logo Section -->
+
+
+        <!-- Start Main Body Section -->
+        <div class="mainbody-section">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-3 text-center">
+
+                        <div class="menu-item light-red">
+                            <a href="{!! url('home') !!}" data-toggle="modal">
+                                <i class="fa fa-user"></i>
+                                <p>{{ trans('money_lover.home') }}</p>
+                            </a>
+                        </div>
+
+                        <div class="menu-item light-orange responsive-2">
+                            <a href="{!! url('addcategory') !!}" data-toggle="modal">
+                                <i class="fa fa-plus"></i>
+                                <p>{{ trans('money_lover.cate_new') }}</p>
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-9 bg-white padding-top-bot col-md-offset-0">
+                        <div class="col-md-10 col-md-offset-1">
+                            <h1 class="text-center">{{ trans('money_lover.cate_all') }}</h1>
+                            @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
+                            @if (Session::has('message'))
+                            <div class="alert alert-success">
+                                <ul>
+                                    <li>{!! session('message') !!}</li>
+                                </ul>
+                            </div>
+                            @endif
+                            <div class="wallet padding-top-bot">
+                                <table class="table table-striped">
+                                    <tr>
+                                        <th>{{ trans('money_lover.avatar') }}</th>
+                                        <th>{{ trans('money_lover.cate_name') }}</th>
+                                        <th>{{ trans('money_lover.note') }}</th>
+                                        <th>{{ trans('money_lover.action') }}</th>
+                                    </tr>
+                                    @foreach($categories as $var)
+                                    <tr>
+                                        <td><img src="{!! $var->image !!}" /></td>
+                                        <td>{!! $var->name !!}</td>
+                                        <td>{!! $var->note !!}</td>
+                                        <td>
+                                            <a href="{!! url('updatecategory') !!}/{!! $var->id !!}">
+                                                <span class="glyphicon glyphicon-edit" aria-hidden="true" title="Edit infor Category"></span>
+                                            </a>&nbsp;
+                                            <a href="{!! url('deletecategory') !!}/{!! $var->id !!}" title="Delete Category">
+                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </table>  
+                                {!! $categories->links() !!}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- End Main Body Section -->
+</body>
+
 </html>

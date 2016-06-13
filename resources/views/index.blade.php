@@ -62,7 +62,7 @@
             </div>
             <div class="logo-right container">
                 <?php if(Auth::check()){ ?>
-                Xin Chào {{ Auth::user()->username }} | <a href="{!! url('logout') !!}">Logout</a>
+                {{ trans('money_lover.welcome',['name' => Auth::user()->username]) }} | <a href="{!! url('welcome/vi') !!}">Việt Nam</a> &nbsp;<a href="{!! url('welcome/en') !!}">English</a> | <a href="{!! url('logout') !!}">Logout</a>
                 <?php } ?>
             </div>
         </section>
@@ -79,7 +79,7 @@
                         <div class="menu-item light-red">
                             <a href="{!! url('update') !!}/{!! Auth::user()->username !!}" data-toggle="modal">
                                 <i class="fa fa-user"></i>
-                                <p>Update User</p>
+                                <p>{{ trans('money_lover.update_user',['name' => Auth::user()->username]) }}</p>
                             </a>
                         </div>
                         

@@ -7,8 +7,16 @@ use App\Http\Requests;
 use App\Wallet;
 use Validator;
 use Illuminate\Support\Facades\Auth;
+use Session;
+use Excel;
 
 class WalletsController extends Controller {
+
+    public function __construct() {
+        $lang = Session::get('language');
+        if ($lang != null)
+            \App::setLocale($lang);
+    }
 
     public function getWallet() {
         $current = Wallet::where('user_id', Auth::user()->id)->where('current', 'yes')->first();
@@ -35,7 +43,7 @@ class WalletsController extends Controller {
         $check_name = Wallet::where('user_id', $user_id)->where('name', $request->name)->get();
         if ($check_name->count()) {
             return redirect()
-                            ->back()->withErrors('This Wallet was register. Please chose new name!');
+                            ->back()->withErrors(trans('money_lover.wallet_err_1'));
         }
         if ($validator->fails()) {
             return redirect()
@@ -56,8 +64,8 @@ class WalletsController extends Controller {
             $file->move($path, $file_name);
         }
         if (Wallet::create($data_input)) {
-            return redirect()->route('home')->withErrors(
-                            'Your register Wallet done!');
+            Session::flash('message', trans('money_lover.wallet_mes_1'));
+            return redirect('wallet');
         } else {
             return redirect()->back();
         }
@@ -67,16 +75,17 @@ class WalletsController extends Controller {
 //            dump($id);
 //            exit(0);
         if (!isset($id) || $id == "") {
-            return redirect()->back()->withErrors("No find wallet. please try again!");
+            return redirect()->back()->withErrors(trans('money_lover.wallet_message_current_err_1'));
         } else {
             $current = Wallet::findOrFail($id);
             if (!isset($current) || $current == "") {
-                return redirect()->back()->withErrors("No find wallet. please try again!");
+                return redirect()->back()->withErrors(trans('money_lover.wallet_message_current_err_1'));
             } else {
                 Wallet::where('user_id', Auth::user()->id)->update(['current' => 'no']);
                 $current["current"] = "yes";
                 $current->save();
-                return redirect()->route('home');
+                Session::flash('message', trans('money_lover.wallet_message_current'));
+                return redirect('wallet');
             }
         }
     }
@@ -99,8 +108,7 @@ class WalletsController extends Controller {
         $id = $request->id;
         $name = Wallet::where('id', '!=', $id)->where('user_id', Auth::user()->id)->where('name', $request->name)->get();
         if ($name->count()) {
-            return redirect()->back()->withErrors(
-                            'Name has been use. Please chose diffrent name!');
+            return redirect()->back()->withErrors(trans('money_lover.wallet_message_update'));
         }
 
         if ($validator->fails()) {
@@ -141,23 +149,22 @@ class WalletsController extends Controller {
 //            dump($results);
 //            exit(0);
         if ($results > 0) {
-            return redirect()->route('home')->withErrors(
-                            'Your update Wallet done!');
+            Session::flash('message', trans('money_lover.wallet_message_update_1'));
+            return redirect('wallet');
         } else {
-            return redirect()->back()->withErrors(
-                            'Your update Wallet not done. Please check again!');
+            return redirect()->back()->withErrors(trans('money_lover.wallet_message_update_2'));
         }
     }
 
     public function getTransWallet($id = null) {
         $wallet = Wallet::where('id', $id)->first();
         if (isset($wallet)) {
-            $wallets = ['' => '--- Select ---'] + Wallet::where('user_id', Auth::user()->id)->where('id', '!=', $id)->where('type_money', $wallet->type_money)->lists('name', 'id')->all();
+            $wallets = ['' => '--- '.trans('money_lover.select').' ---'] + Wallet::where('user_id', Auth::user()->id)->where('id', '!=', $id)->where('type_money', $wallet->type_money)->lists('name', 'id')->all();
 //            dump($wallets);
 //            exit(0);
             return view('Wallet.transwallet')->with(['wallet' => $wallet, 'wallets' => $wallets]);
         } else {
-            return redirect()->back()->withErrors("No find wallet. please try again!");
+            return redirect()->back()->withErrors(trans('money_lover.wallet_err_2'));
         }
     }
 
@@ -169,11 +176,11 @@ class WalletsController extends Controller {
                     'select_wallet' => 'required',
         ]);
         $money = $request->trans_money;
-        $wallet = Wallet::where('id',$request->id)->first();
+        $wallet = Wallet::where('id', $request->id)->first();
         if (($wallet->money - $money) < 0) {
             return redirect()
                             ->back()
-                            ->withErrors('The amount you enter larger the amount you have in your wallet!');
+                            ->withErrors(trans('money_lover.wallet_err_3'));
         }
 
         if ($validator->fails()) {
@@ -188,7 +195,8 @@ class WalletsController extends Controller {
         $trans = Wallet::where('id', $request->select_wallet)->first();
         $trans->money = $trans->money + $request->trans_money;
         $trans->save();
-        return redirect()->route('home')->withFlashSuccess(trans('Transfer money complete!'));
+        Session::flash('message', trans('money_lover.wallet_mes_2'));
+        return redirect('wallet');
     }
 
     public function getDeleteWallet($id = null) {
@@ -196,11 +204,23 @@ class WalletsController extends Controller {
             return redirect()->back();
         } else {
             if (Wallet::where('id', $id)->delete()) {
-                return redirect()->route('home');
+                Session::flash('message', trans('money_lover.wallet_mes_3'));
+                return redirect('wallet');
             } else {
                 return redirect()->back();
             }
         }
+    }
+
+    public function getExcel() {
+        Excel::create('First Excel', function($excel) {
+
+            $excel->sheet('Day la sheet 1', function($sheet) {
+
+                $sheet->loadView('admin.excel');
+            });
+            $excel->export('xlsx');
+        });
     }
 
 }

@@ -50,6 +50,7 @@
         "preferred-install": "dist"
     },    
     "require": {
-        "laravelcollective/html": "5.2.*"
+        "laravelcollective/html": "5.2.*",
+        "maatwebsite/excel": "2.*"
     }
 }

@@ -3,43 +3,48 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-
 use Illuminate\Support\Facades\Auth;
 use Storage;
 use Validator;
 use App\Category;
+use Session;
 
-class CategoriesController extends Controller
-{
-    public function getCategories(){
-        $categories = Category::paginate(5);
-        return view('Category.index')->with('categories',$categories);
+class CategoriesController extends Controller {
+
+    public function __construct() {
+        $lang = Session::get('language');
+        if ($lang != null)
+            \App::setLocale($lang);
     }
-    
-    public function getAddCategory(){
+
+    public function getCategories() {
+        $categories = Category::paginate(5);
+        return view('Category.index')->with('categories', $categories);
+    }
+
+    public function getAddCategory() {
         return view('Category.add');
     }
-    
+
     public function postAddCategory(Request $request) {
-        
+
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:categories|min:4',
-            'image'=> 'required|mimes:jpeg,jpg,png',
+                    'name' => 'required|unique:categories|min:4',
+                    'image' => 'required|mimes:jpeg,jpg,png',
         ]);
 
         if ($validator->fails()) {
             return redirect()
-                        ->back()
-                        ->withErrors($validator);
+                            ->back()
+                            ->withErrors($validator);
         }
-        
+
         $data_input = $request->all();
         if ($request->file('image')->isValid()) {
             $file = $request->file('image');
             $file_name = $data_input['name'] . '.jpg';
-            $path = "uploads/" . Auth::user()->username.'/category';
+            $path = "uploads/" . Auth::user()->username . '/category';
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }
@@ -47,42 +52,42 @@ class CategoriesController extends Controller
             $file->move($path, $file_name);
         }
         if (Category::create($data_input)) {
-            return redirect('category')->withErrors('Your register Category done!');
+            Session::flash('message', trans('money_lover.cate_done'));
+            return redirect('category');
         } else {
             return redirect()->back();
         }
     }
-    
+
     public function getUpdateCategory($id = null) {
-        $category = Category::where('id',$id)->first();
+        $category = Category::where('id', $id)->first();
         return view('Category.update')->with('category', $category);
     }
 
     public function postUpdateCategory(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|min:4',
-            'image'=> 'mimes:jpeg,jpg,png',
+                    'name' => 'required|min:4',
+                    'image' => 'mimes:jpeg,jpg,png',
         ]);
-        
-        
+
+
         $id = $request->id;
-        $name = Category::where('id','!=',$id)->where('name',$request->name)->get();
-        if($name->count()){
-            return redirect()->back()->withErrors(
-                            'Name has been use. Please chose diffrent name!');
+        $name = Category::where('id', '!=', $id)->where('name', $request->name)->get();
+        if ($name->count()) {
+            return redirect()->back()->withErrors(trans('money_lover.cate_err_1'));
         }
 
         if ($validator->fails()) {
             return redirect()
-                        ->back()
-                        ->withErrors($validator);
+                            ->back()
+                            ->withErrors($validator);
         }
-        
+
         $image = '';
         if (!empty($request->file('image')) && $request->file('image')->isValid()) {
             $file = $request->file('image');
             $file_name = $request->name . '.jpg';
-            $path = "uploads/" . Auth::user()->username.'/category';
+            $path = "uploads/" . Auth::user()->username . '/category';
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);
             }
@@ -106,15 +111,14 @@ class CategoriesController extends Controller
 //            dump($results);
 //            exit(0);
         if ($results > 0) {
-            return redirect('category')->withErrors(
-                            'Your update Category done!');
+            Session::flash('message', trans('money_lover.cate_done_1'));
+            return redirect('category');
         } else {
-            return redirect()->back()->withErrors(
-                            'Your update Category not done. Please check again!');
+            return redirect()->back()->withErrors(trans('money_lover.cate_err_2'));
         }
     }
-    
-    public function getDeleteCategory($id = null){
+
+    public function getDeleteCategory($id = null) {
         if (!isset($id) || $id == "") {
             return redirect()->back();
         } else {
@@ -122,10 +126,12 @@ class CategoriesController extends Controller
             Storage::delete(public_path($category->image));
 //            @unlink($category->image);
             if (Category::where('id', $id)->delete()) {
+                Session::flash('message', trans('money_lover.cate_del'));
                 return redirect('category');
             } else {
                 return redirect()->back();
             }
         }
     }
+
 }

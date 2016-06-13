@@ -11,7 +11,12 @@
   |
  */
 
-
+Route::get('welcome/{locale}', function ($locale) {
+    App::setLocale($locale);
+    Session::put('language', $locale);
+    return redirect()->back();
+    //
+});
 //User
 
 Route::get('/login', ['uses' => 'UserController@getLogin', 'as' => 'getLogin']);

@@ -10,9 +10,15 @@ use App\Http\Requests\UpdateRequest;
 use App\User;
 use Mail;
 use DateTime;
+use Session;
 
 class UserController extends Controller {
 
+    public function __construct () {
+        $lang = Session::get ('language');
+        if ($lang != null) \App::setLocale($lang);
+    }
+    
     public function getLogin() {
         if (!Auth::check()) {
             return view("User.login");
@@ -65,8 +71,9 @@ class UserController extends Controller {
         $data_input["active"] = "no";
         $data_input["remember_token"] = $token;
         if (User::create($data_input)) {
-            return redirect()->route('getLogin')->withErrors(
-                            'We have been send your an email to active account. Please check your email!');
+            
+            Session::flash('message', "We have been send your an email to active account. Please check your email!");
+            return redirect()->route('getLogin');
         } else {
             return redirect()->back();
         }
@@ -86,8 +93,8 @@ class UserController extends Controller {
         }
     }
 
-    public function getUpdate($username = null) {
-        $user = User::where('username', '=', $username)->first();
+    public function getUpdate($username = null) { 
+        $user = User::where('username', $username)->first();
         return view('User.update')->with('user', $user);
     }
 

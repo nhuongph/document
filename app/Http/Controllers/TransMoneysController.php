@@ -11,17 +11,25 @@ use App\Wallet;
 use DateTime;
 use DB;
 use Validator;
+use Session;
 
 class TransMoneysController extends Controller {
 
+    public function __construct() {
+        $lang = Session::get('language');
+        if ($lang != null)
+            \App::setLocale($lang);
+    }
+
     public function getTransactions() {
         $transmoneys = TransMoney::paginate(5);
-        return view('TransMoney.index')->with('transmoneys', $transmoneys);
+        $categories = ['' => '--- '.trans('money_lover.select').' ---'] + Category::lists('name', 'id')->all();
+        return view('TransMoney.index')->with(['transmoneys' => $transmoneys, 'categories' => $categories]);
     }
 
     public function getAddTransaction() {
-        $categories = ['' => '--- Select ---'] + Category::lists('name', 'id')->all();
-        $wallets = ['' => '--- Select ---'] + Wallet::where('user_id', Auth::user()->id)->lists('name', 'id')->all();
+        $categories = ['' => '--- '.trans('money_lover.select').' ---'] + Category::lists('name', 'id')->all();
+        $wallets = ['' => '--- '.trans('money_lover.select').' ---'] + Wallet::where('user_id', Auth::user()->id)->lists('name', 'id')->all();
         return view('TransMoney.add')->with(['categories' => $categories, 'wallets' => $wallets]);
     }
 
@@ -36,7 +44,7 @@ class TransMoneysController extends Controller {
         if (($wallet->money + $money) < 0) {
             return redirect()
                             ->back()
-                            ->withErrors('The amount you enter larger the amount you have in your wallet!');
+                            ->withErrors(trans('money_lover.trans_err_1'));
         }
         if ($validator->fails()) {
             return redirect()
@@ -49,7 +57,7 @@ class TransMoneysController extends Controller {
 //        dump($wallet);
 //        exit(0);
         if (!isset($category) || !isset($wallet)) {
-            return redirect()->back()->withErrors('Can not add transaction money!');
+            return redirect()->back()->withErrors(trans('money_lover.trans_err_2'));
         } else {
             TransMoney::insert([
                 'name' => $category->name,
@@ -67,14 +75,15 @@ class TransMoneysController extends Controller {
                 'money' => $wallet->money,
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
-            return redirect('transactions')->withErrors('Add transaction money complete!');
+            Session::flash('message', trans('money_lover.trans_mes_1'));
+            return redirect('transactions');
         }
     }
 
     public function getUpdateTransaction($id = null) {
         $transaction = TransMoney::where('id', $id)->first();
-        $categories = ['' => '--- Select ---'] + Category::lists('name', 'id')->all();
-        $wallets = ['' => '--- Select ---'] + Wallet::where('user_id', Auth::user()->id)->lists('name', 'id')->all();
+        $categories = ['' => '--- '.trans('money_lover.select').' ---'] + Category::lists('name', 'id')->all();
+        $wallets = ['' => '--- '.trans('money_lover.select').' ---'] + Wallet::where('user_id', Auth::user()->id)->lists('name', 'id')->all();
         return view('TransMoney.update')->with(['transaction' => $transaction, 'categories' => $categories, 'wallets' => $wallets]);
     }
 
@@ -91,26 +100,26 @@ class TransMoneysController extends Controller {
                             ->withErrors($validator);
         }
 
-        $id = $request->id;        
+        $id = $request->id;
         $money = $request->money;
         $transaction = TransMoney::where('id', $id)->first();
         $old_wallet = Wallet::where('id', $transaction->wallet_id)->first();
-            if (isset($old_wallet)) {
-                $old_wallet->money = $old_wallet->money - $transaction->money;
-                Wallet::where('id', $old_wallet->id)->update([
-                    'money' => $old_wallet->money,
-                    'updated_at' => date('Y-m-d H:i:s')
-                ]);
-            }
+        if (isset($old_wallet)) {
+            $old_wallet->money = $old_wallet->money - $transaction->money;
+            Wallet::where('id', $old_wallet->id)->update([
+                'money' => $old_wallet->money,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+        }
         $category = Category::where('id', $request->category_id)->first();
         $wallet = Wallet::where('id', $request->wallet_id)->first();
         if (!isset($category) || !isset($wallet) || !isset($transaction)) {
-            return redirect()->back()->withErrors('Can not update transaction money!');
-        } else {   
+            return redirect()->back()->withErrors(trans('money_lover.trans_err_3'));
+        } else {
             if (($wallet->money + $money) < 0) {
                 return redirect()
                                 ->back()
-                                ->withErrors('The amount you enter larger the amount you have in your wallet!');
+                                ->withErrors(trans('money_lover.trans_err_1'));
             }
             TransMoney::where('id', $id)->update([
                 'name' => $category->name,
@@ -127,7 +136,8 @@ class TransMoneysController extends Controller {
                 'money' => $wallet->money,
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
-            return redirect('transactions')->withErrors('Update transaction money complete!');
+            Session::flash('message', trans('money_lover.trans_mes_2'));
+            return redirect('transactions');
         }
     }
 
@@ -136,6 +146,7 @@ class TransMoneysController extends Controller {
             return redirect()->back();
         } else {
             if (TransMoney::where('id', $id)->delete()) {
+                Session::flash('message', trans('money_lover.trans_mes_3'));
                 return redirect('transactions');
             } else {
                 return redirect()->back();
@@ -145,7 +156,7 @@ class TransMoneysController extends Controller {
 
     public function getSearchReport() {
         $transmoneys = TransMoney::all();
-        $categories = ['' => '--- Select ---'] + Category::lists('name', 'id')->all();
+        $categories = ['' => '--- '.trans('money_lover.select').' ---'] + Category::lists('name', 'id')->all();
         return view('TransMoney.search')->with(['transmoneys' => $transmoneys, 'categories' => $categories]);
     }
 
@@ -169,27 +180,24 @@ class TransMoneysController extends Controller {
         }
 
         if (isset($date) && ($date != "") && isset($category) && ($category != "")) {
-            $transmoneys = TransMoney::where(DB::raw('DATE(updated_at)'), '=', $date)->where('category_id', $category)->get();
+            $transmoneys = TransMoney::where(DB::raw('DATE(updated_at)'), '=', $date)->where('category_id', $category)->paginate(5);
         } elseif (isset($date) && ($date != "")) {
-            $transmoneys = TransMoney::where(DB::raw('DATE(updated_at)'), '=', $date)->get();
-//            $transmoneys = TransMoney::where(DB::raw('DATE(updated_at)'), '=', $date)->toSql();
-//            dd($date);
-//            exit(0);
+            $transmoneys = TransMoney::where(DB::raw('DATE(updated_at)'), '=', $date)->paginate(5);
         } elseif (isset($category) && ($category != "")) {
-            $transmoneys = TransMoney::where('category_id', $category)->get();
+            $transmoneys = TransMoney::where('category_id', $category)->paginate(5);
         } else {
-            $transmoneys = TransMoney::all();
+            $transmoneys = TransMoney::paginate(5);
         }
-        $categories = ['' => '--- Select ---'] + Category::lists('name', 'id')->all();
-        return view('TransMoney.search')->with(['transmoneys' => $transmoneys, 'categories' => $categories]);
+        $categories = ['' => '--- '.trans('money_lover.select').' ---'] + Category::lists('name', 'id')->all();
+        return view('TransMoney.index')->with(['transmoneys' => $transmoneys, 'categories' => $categories]);
     }
 
     public function getReportMonth() {
         $date = new DateTime();
         $m = $date->format('m');
         $y = $date->format('Y');
-        $transmoneys = TransMoney::whereMonth('updated_at', '=', $m)->whereYear('updated_at', '=', $y)->get();
-        $categories = Category::all();
+        $transmoneys = TransMoney::whereMonth('updated_at', '=', $m)->whereYear('updated_at', '=', $y)->paginate(5);
+        $categories = Category::lists('name', 'id')->all();
         return view('TransMoney.report')->with(['transmoneys' => $transmoneys, 'categories' => $categories]);
     }
 
@@ -207,11 +215,11 @@ class TransMoneysController extends Controller {
 
         if (isset($month) && ($month != "")) {
             list($m, $y) = explode("/", $request->month);
-            $transmoneys = TransMoney::whereMonth('updated_at', '=', $m)->whereYear('updated_at', '=', $y)->get();
+            $transmoneys = TransMoney::whereMonth('updated_at', '=', $m)->whereYear('updated_at', '=', $y)->paginate(5);
         } else {
-            $transmoneys = TransMoney::all();
+            $transmoneys = TransMoney::paginate(5);
         }
-        $categories = Category::all();
+        $categories = Category::lists('name', 'id')->all();
         return view('TransMoney.report')->with(['transmoneys' => $transmoneys, 'categories' => $categories]);
     }
 
