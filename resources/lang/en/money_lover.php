@@ -7,6 +7,7 @@
  */
 
 return [
+    'sologan' => 'Manager You Money',
     'welcome' => 'Welcome :name',
     'wallet' => 'Wallets',
     'logout' => 'Logout',
@@ -79,4 +80,23 @@ return [
     'trans_mes_1' => "Add transaction money complete!",
     'trans_mes_2' => "Update transaction money complete!",
     'trans_mes_3' => "Delete transaction money complete!",
+    
+    
+    'user_login' => 'Login',
+    'user_register' => 'Register User',
+    'user_update' => 'Update User',
+    'user_forgot' => 'Forgot Password',
+    'user_user' => 'Username',
+    'user_pass' => 'Password',
+    'user_email' => 'Email',
+    'user_avatar' => 'Select you avatar.',
+    'user_re_pass' => 'Re-Password',
+    'user_forgot_mes' => 'Email register account',
+    'user_forgot_get' => 'Send email reset password', 
+    'user_change_pass' => 'Change password',   
+    'user_err_1' => 'Username or Password fail.',
+    'user_err_2' => 'Not find account active!',
+    'user_err_3' => 'Name or Email was be use. Please input diffrent Name or Email',
+    'user_mes_1' => 'We have been send your an email to active account. Please check your email!',
+    
 ];

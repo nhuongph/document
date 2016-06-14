@@ -36,7 +36,7 @@ class UserController extends Controller {
         if (Auth::attempt($login)) {
             return redirect('home');
         } else {
-            return redirect()->back()->withErrors('Username or Password fail!');
+            return redirect()->back()->withErrors(trans('money_lover.user_err_1'));
         }
     }
 
@@ -72,7 +72,7 @@ class UserController extends Controller {
         $data_input["remember_token"] = $token;
         if (User::create($data_input)) {
             
-            Session::flash('message', "We have been send your an email to active account. Please check your email!");
+            Session::flash('message', trans('money_lover.user_mes_1'));
             return redirect()->route('getLogin');
         } else {
             return redirect()->back();
@@ -85,7 +85,7 @@ class UserController extends Controller {
         $user = User::where('remember_token', '=', $token)->first();
         if (!isset($user) || $user == "") {
             return redirect('login')->withErrors(
-                            'Not find account active!');
+                            trans('money_lover.user_err_2'));
         } else {
             $user['active'] = 'yes';
             $user->save();
@@ -106,7 +106,7 @@ class UserController extends Controller {
         })->get();
         
         if(count($check_user)){
-            return redirect()->back()->withErrors('Name or Email was be use. Please input diffrent Name or Email');
+            return redirect()->back()->withErrors(trans('money_lover.user_err_3'));
         }
         
         $user = User::where('id', '=', $request->id)->first();

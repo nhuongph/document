@@ -37,6 +37,8 @@ Route::controllers(
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', function () {
+        $lang = Session::get ('language');
+        if ($lang != null) \App::setLocale($lang);
         return view('layouts.master');
     });
 //User
@@ -47,6 +49,8 @@ Route::group(['middleware' => 'auth'], function () {
 //Walltet 
     Route::get('/wallet', ['uses' => 'WalletsController@getWallet', 'as' => 'wallet']);
     Route::get('/home', function () {
+        $lang = Session::get ('language');
+        if ($lang != null) \App::setLocale($lang);
         return view('index');
     });
     Route::get('/addwallet', ['uses' => 'WalletsController@getAddWallet', 'as' => 'addWallet']);

@@ -7,6 +7,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Session;
 
 class AuthController extends Controller
 {
@@ -37,6 +38,9 @@ class AuthController extends Controller
      */
     public function __construct()
     {
+        $lang = Session::get('language');
+        if ($lang != null)
+            \App::setLocale($lang);
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Session;
 
 class PasswordController extends Controller
 {
@@ -27,6 +28,9 @@ class PasswordController extends Controller
      */
     public function __construct()
     {
+        $lang = Session::get('language');
+        if ($lang != null)
+            \App::setLocale($lang);
         $this->middleware('guest');
     }
 }

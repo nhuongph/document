@@ -7,6 +7,7 @@
  */
 
 return [
+    'sologan' => 'Quản lý chi tiêu',
     'welcome' => 'Xin Chào :name',
     'wallet' => 'Ví tiền',
     'logout' => 'Đăng xuất',
@@ -79,4 +80,22 @@ return [
     'trans_mes_1' => "Thêm giao dịch thành công!",
     'trans_mes_2' => "Cập nhật giao dịch thành công!",
     'trans_mes_3' => "Xóa giao dịch thành công!",
+    
+    'user_login' => 'Đăng nhập',
+    'user_register' => 'Đăng ký tài khoản',
+    'user_update' => 'Cập nhật tài khoản',
+    'user_forgot' => 'Quên mật khẩu',
+    'user_user' => 'Tài khoản',
+    'user_pass' => 'Mật khẩu',
+    'user_email' => 'Email',
+    'user_avatar' => 'Chọn hình đại diện cho bạn',
+    'user_re_pass' => 'Nhập lại mật khẩu',
+    'user_forgot_mes' => 'Nhập email đăng ký tài khoản',
+    'user_forgot_get' => 'Gửi mail đặt lại mật khẩu',
+    'user_change_pass' => 'Thay đổi mật khẩu',
+    'user_err_1' => 'Tài khoản hoặc mật khẩu không đúng.',
+    'user_err_2' => 'Không tìm thấy tài khoản để kích hoạt!',
+    'user_err_3' => 'Tên hoặc email đã được sử dụng. Hãy kiểm tra lại!',
+    'user_mes_1' => 'Chúng tôi đã gửi email kích hoạt tại khoản cho bạn. Hãy kiểm tra lại email!',
+    
 ];
